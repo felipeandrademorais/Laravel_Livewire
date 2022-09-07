@@ -1,6 +1,4 @@
-# Prova PHP IST
-
-O desenvolvimento da prova consiste em desenvolver um sistema, conforme especificado nos protótipos abaixo.
+# Conceito
 
 **Cadastro de pessoa**
 
