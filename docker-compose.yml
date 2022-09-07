@@ -1,0 +1,53 @@
+version: "3"
+services:
+  # Web service layer
+  nginx:
+    container_name: nginx
+    image: nginx:1.13
+    volumes:
+      - "./app:/var/www/html"
+      - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
+    ports:
+      - "80:80"
+    depends_on:
+      - php
+    networks:
+      - docker_network
+
+  # Application service layer
+  php:
+    build:
+      context: ./php
+    container_name: app
+    volumes:
+      - "./app:/var/www/html"
+    ports:
+      - "9000:9000"
+    depends_on:
+      - mysql
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_PASS=123.456
+    networks:
+      - docker_network
+
+  # Data persistence service layer
+  mysql:
+    container_name: mysql
+    image: mysql:5.7.20
+    volumes:
+      - "db_data3:/var/lib/mysql"
+      - "./db:/docker-entrypoint-initdb.d"
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=123.456
+    networks:
+      - docker_network
+
+volumes:
+  db_data3:
+
+networks:
+  docker_network:
+    external: true
